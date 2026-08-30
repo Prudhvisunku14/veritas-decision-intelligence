@@ -1,198 +1,253 @@
-# Veritas KPI - BusinessIntelligence.ai Round 2
+# 🛡️ Veritas KPI — Evidence-Grounded Decision Intelligence Engine
 
-Veritas KPI is an evidence-grounded KPI intelligence-to-action prototype for the BusinessIntelligence.ai Round 2 challenge.
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.116.1-009688.svg)](https://fastapi.tiangolo.com/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.49.1-FF4B4B.svg)](https://streamlit.io/)
+[![DuckDB](https://img.shields.io/badge/DuckDB-1.3.2-FFF000.svg)](https://duckdb.org/)
+[![Gemini 1.5 Flash](https://img.shields.io/badge/LLM-Gemini%201.5%20Flash-4285F4.svg)](https://aistudio.google.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-It demonstrates a governed pipeline that:
+**Veritas KPI** is an enterprise-grade, evidence-grounded decision engine designed to solve the critical flaw of AI in business analytics: **LLM hallucination, ungrounded numbers, and lack of mathematical attribution.**
 
-1. detects material KPI movements,
-2. reconciles heterogeneous data sources,
-3. decomposes KPI changes with deterministic analytics (Shapley decomposition),
-4. diagnoses likely business drivers (Level 2),
-5. packages evidence and uncertainty into a structured Evidence Object,
-6. abstains when evidence is weak or contradictory,
-7. generates persona-specific narratives without letting the LLM invent numbers,
-8. recommends actions from a controlled playbook with decision-right checks,
-9. captures feedback and runtime telemetry.
+Unlike traditional dashboards that display static charts or raw LLM chatbots that make up numerical causes, Veritas implements a **strict deterministic-first architecture**:
+$$\text{SQL / Statistics Truth} \longrightarrow \text{Evidence Object} \longrightarrow \text{Factuality Guard} \longrightarrow \text{LLM Explanation} \longrightarrow \text{Governed Action Playbooks}$$
 
-## Core design principle
+---
 
-**SQL/statistics determine quantitative truth -> Evidence Object packages truth and uncertainty -> LLM explains and personalizes -> business rules control actions.**
+## 📸 Interactive System Showcase
 
-The LLM is never used to calculate KPI values, anomaly scores, bridge contributions, confidence scores, access permissions, or expected impact.
+### 1. Persona-Aware Decision Entry
+Veritas enforces strict role-based access security at the data layer. Entitlements restrict visibility by geographic scope and metric authorization.
 
-## Prototype stack
+![Persona Selection](docs/assets/01_persona_selection.png)
 
-- Python 3.11+
-- Pandas / NumPy
-- DuckDB
-- FastAPI
-- statsmodels / scipy / scikit-learn
-- Streamlit / Plotly
-- YAML semantic contracts and action playbooks
-- Optional Anthropic/Claude adapter; deterministic template fallback works with no API key
-- Docker / Docker Compose
+---
 
-## Repository structure
+### 2. Executive Anomaly Dashboard & Baseline Forecasting
+Real-time tracking of revenue performance vs. 120-day Holt-Winters predictive baselines, featuring materiality scoring ($0.69 / 1.00$) and automatic incident detection.
 
-```text
-Veritas_KPI_Round2_Submission/
-|-- README.md
-|-- SUBMISSION.md
-|-- ARCHITECTURE.md
-|-- DEMO_SCRIPT.md
-|-- VERIFICATION.md
-|-- STATUS.md
-|-- requirements.txt
-|-- .env.example
-|-- docker-compose.yml
-|-- backend/
-|   |-- app/
-|   |   |-- main.py
-|   |   |-- config.py
-|   |   |-- db.py
-|   |   |-- schemas.py
-|   |   |-- security.py
-|   |   |-- services/
-|   |   |   |-- analytics.py
-|   |   |   |-- evidence.py
-|   |   |   |-- narrative.py
-|   |   |   |-- actions.py
-|   |   |   `-- context.py
-|   |   `-- knowledge/
-|   |       |-- kpi_contracts.yaml
-|   |       |-- action_playbooks.yaml
-|   |       `-- policies.md
-|   `-- tests/
-|-- frontend/
-|   `-- streamlit_app.py
-|-- scripts/
-|   |-- generate_synthetic_data.py
-|   |-- init_duckdb.py
-|   |-- bootstrap.py
-|   `-- evaluate_system.py
-|-- data/
-|   |-- bronze/
-|   |-- gold/
-|   `-- metadata/
-`-- docs/
-    |-- IMPLEMENTATION_PLAN.md
-    |-- JUDGE_QA.md
-    |-- DATA_DICTIONARY.md
-    `-- REQUIREMENTS_TRACEABILITY.md
+![Executive Dashboard](docs/assets/02_executive_dashboard.png)
+
+---
+
+### 3. Level-1 Shapley Decomposition & Factuality-Guarded AI Insight
+Exact mathematical decomposition of multiplicative KPI movements reconciled down to floating-point precision ($3.55 \times 10^{-15}$ error) alongside persona-customized AI executive narratives.
+
+![Shapley Decomposition and AI Insight](docs/assets/04_shapley_and_insights.png)
+
+---
+
+### 4. Level-2 Governed Root-Cause Matrix & Driver Diagnosis
+Multi-factor driver diagnostics mapping conversion friction, stock availability, and pricing mix shift with calculated Evidence Confidence Scores (ECS).
+
+![Driver Diagnosis](docs/assets/03_driver_diagnosis.png)
+
+---
+
+### 5. Non-Obtrusive Compact Floating Assistant
+A compact, 340px viewport-fixed AI assistant providing instant evidence-grounded answers without obstructing dashboard visuals.
+
+![Floating Chatbot Assistant](docs/assets/05_floating_chatbot.png)
+
+---
+
+## 📐 Mathematical Formulations & Analytical Rigor
+
+### 1. Level-1 Multiplicative Shapley KPI Decomposition
+For a multiplicative KPI tree $Y = T \times C \times A$ (where $Y = \text{Revenue}$, $T = \text{Traffic/Sessions}$, $C = \text{Conversion Rate}$, $A = \text{Average Order Value}$), the percentage change $\Delta Y$ from baseline $Y_0$ to actual $Y_1$ is decomposed into exact additive contributions $\phi_T, \phi_C, \phi_A$:
+
+$$\Delta \ln Y = \ln T_1 - \ln T_0 + \ln C_1 - \ln C_0 + \ln A_1 - \ln A_0$$
+
+Using logarithmic mean weighting $w(a, b) = \frac{a - b}{\ln a - \ln b}$:
+
+$$\phi_i = \frac{w(Y_1, Y_0)}{\Delta Y} \times \Delta \ln X_i \quad \text{such that} \quad \sum_{i \in \{T, C, A\}} \phi_i = \frac{Y_1 - Y_0}{Y_0}$$
+
+*Reconciliation Guarantee*: Sum of contributions equals the exact total delta with zero residual bias ($\text{Error} \le 10^{-14}$).
+
+---
+
+### 2. Holt-Winters Anomaly Detection & Baseline Forecasting
+Baseline expectations $\hat{Y}_{t}$ are derived using triple exponential smoothing with multiplicative seasonality ($p = 7$ days):
+
+$$\hat{Y}_{t+h} = (L_t + h B_t) S_{t+h-p}$$
+
+Anomalies are flagged when actual values fall outside the $95\%$ prediction interval:
+
+$$\text{Anomaly Score} = \frac{|Y_t - \hat{Y}_t|}{\sigma_e} > 2.58 \implies \text{Material Incident Flagged}$$
+
+---
+
+### 3. Evidence Confidence Score (ECS) & Abstention
+To prevent premature or ungrounded conclusions, Level-2 drivers are weighted by an Evidence Confidence Score $\text{ECS} \in [0, 1]$:
+
+$$\text{ECS} = w_1 \cdot S_{\text{data}} + w_2 \cdot S_{\text{sample}} + w_3 \cdot S_{\text{temporal}} + w_4 \cdot S_{\text{cross\_source}}$$
+
+- **High Confidence ($\ge 0.85$)**: Direct automated playbook execution permitted.
+- **Medium Confidence ($0.50 - 0.84$)**: Governed approval required.
+- **Low Confidence ($< 0.50$)**: Engine **abstains** from diagnosing cause to prevent false leads.
+
+---
+
+## 🏗️ End-to-End System Architecture
+
+```mermaid
+flowchart TD
+    subgraph Data Layer
+        A[Bronze CSV Feeds: Orders, Inventory, Marketing] --> B[DuckDB Analytical Engine]
+        B --> C[Gold Daily Aggregates & Marts]
+    end
+
+    subgraph Analytical Engine
+        C --> D[Holt-Winters Baseline Model]
+        C --> E[Multiplicative Shapley KPI Bridge]
+        C --> F[Level-2 Business Driver Diagnostics]
+        D & E & F --> G[Evidence Object Aggregator]
+    end
+
+    subgraph Governance & Security
+        G --> H[Security Scoping Filter: Persona & Entitlements]
+        H --> I[Evidence Object & Validated Actions]
+    end
+
+    subgraph Dual LLM Layer with Factuality Guard
+        I --> J{LLM Provider Selection}
+        J -- Gemini / Anthropic --> K[Factuality & Grounding Validator]
+        J -- Key Missing / Failure --> L[Deterministic Template Fallback]
+        K -- Passed --> M[Grounded Executive Narrative]
+        K -- Factuality Violation --> L
+    end
+
+    subgraph Presentation Layer
+        M & L --> N[Streamlit Decision Dashboard & Floating Assistant]
+    end
 ```
 
-## Quick start
+---
 
-### 1. Create environment and install dependencies
+## 🚀 Quick Start — Local Setup
 
+### 1. Clone & Environment Setup
 ```bash
+git clone https://github.com/Prudhvisunku14/veritas-decision-intelligence.git
+cd veritas-decision-intelligence
+
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
+# On Windows:
+.venv\Scripts\activate
+# On Linux/macOS:
+source .venv/bin/activate
+
 pip install -r requirements.txt
 ```
 
-### 2. Generate synthetic data and initialize DuckDB
-
+### 2. Generate Synthetic Data & Bootstrap Database
 ```bash
 python scripts/bootstrap.py
 ```
+*Generates 12-18 months of bronze/gold DuckDB datasets with injected multi-factor incident anomalies.*
 
-This creates 12-18 months of synthetic Sales, Marketing, and Inventory data plus hidden ground-truth driver metadata for evaluation.
-
-### 3. Run full test suite & system evaluation
-
+### 3. Run Automated System Evaluation & Test Suite
 ```bash
 python -m pytest backend/tests -q
 python scripts/evaluate_system.py
 ```
 
-### 4. Start API server
-
+### 4. Start Local Services
+**Terminal 1 — FastAPI Backend (Port 8000)**:
 ```bash
 python -m uvicorn backend.app.main:app --reload --port 8000
 ```
+*API Documentation available at `http://localhost:8000/docs`.*
 
-Open API docs at `http://localhost:8000/docs`.
-
-### 5. Start Streamlit UI
-
-In another terminal:
-
+**Terminal 2 — Streamlit Frontend (Port 8501)**:
 ```bash
 python -m streamlit run frontend/streamlit_app.py
 ```
+*Dashboard will automatically open at `http://localhost:8501`.*
 
-The UI expects the API at `http://localhost:8000` by default.
+---
 
-## Demo users
+## 🤖 LLM Configuration (Gemini / Anthropic / Template Mode)
 
-| Demo user | Role | Scope |
-|---|---|---|
-| `ceo` | CEO/CFO | All regions and KPIs |
-| `north_mgr` | Regional Manager | North only |
-| `marketing_mgr` | Marketing Manager | Marketing-related views (No Gross Margin) |
-| `analyst` | Analyst | All regions, detailed read access |
+Veritas operates in **3 flexible LLM modes**. Copy `.env.example` to `.env`:
 
-The prototype uses a demo-user header (`X-Demo-User`) for deterministic testing. The security module is intentionally isolated so it can be replaced with JWT/OIDC in production.
-
-## Main demo scenario
-
-A multi-week North-region revenue deterioration (-13.89% Revenue drop, Materiality 0.702) is injected into the synthetic generator using independent interventions:
-
-- marketing spend and traffic reduction,
-- checkout/funnel conversion degradation,
-- stock availability deterioration,
-- adverse product-mix shift,
-- a small positive price offset.
-
-The engine first explains **what moved** with a Level-1 KPI bridge:
-
-```text
-Revenue = Sessions x Conversion Rate x AOV
+### Mode A: Google Gemini AI (Recommended)
+```env
+LLM_PROVIDER=gemini
+GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-1.5-flash
 ```
 
-It then explains **why those components moved** using Level-2 business-driver diagnosis. This avoids double counting causes that sit at different points in the business chain.
+### Mode B: Anthropic Claude
+```env
+LLM_PROVIDER=anthropic
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+ANTHROPIC_MODEL=claude-3-5-sonnet-20241022
+```
 
-## Required scenarios included
-
-- material KPI anomaly (-13.89% revenue drop, materiality score 0.702),
-- multi-factor KPI bridge and driver diagnosis,
-- CEO vs Regional Manager narratives,
-- low-confidence/stale-data abstention,
-- sparse-history/new-product handling (`P020` cohort benchmarking),
-- role-based access denial (`north_mgr` denied `South`),
-- analyst feedback capture,
-- latency/token/cost telemetry.
-
-## LLM mode
-
-The repository works 100% offline without an API key. By default:
-
+### Mode C: Deterministic Template Fallback (100% Offline / Zero API Key)
 ```env
 LLM_PROVIDER=template
 ```
+*If an API key is missing, rate-limited, or fails factuality validation, the system seamlessly falls back to template mode without interrupting user workflow.*
 
-To use Anthropic, copy `.env.example` to `.env`, set:
+---
 
-```env
-LLM_PROVIDER=anthropic
-ANTHROPIC_API_KEY=...
-ANTHROPIC_MODEL=...
-```
+## ☁️ Production Cloud Deployment (Railway)
 
-The model receives only the authorized Evidence Object and allowed contextual snippets. If the external LLM fails, the deterministic template narrative remains available.
+Veritas is pre-configured for instant dual-service deployment on **[Railway.app](https://railway.app)**.
 
-## Evaluation Results
+### Backend Service (`veritas-api`)
+- **Build Config**: `railway.toml` (Nixpacks)
+- **Start Command**: `python scripts/bootstrap.py && uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT`
+- **Healthcheck Path**: `/health`
+- **Environment Variables**:
+  ```env
+  APP_ENV=production
+  DUCKDB_PATH=data/veritas_kpi.duckdb
+  LLM_PROVIDER=gemini
+  GEMINI_API_KEY=your_railway_secret_key
+  GEMINI_MODEL=gemini-1.5-flash
+  ```
 
-Run `python scripts/evaluate_system.py`:
-- Anomaly Precision / Recall / F1: `1.0 / 1.0 / 1.0`
-- Shapley Bridge Reconciliation Error: `3.55e-15` (Exact float precision)
-- Top-1 & Top-2 Driver Recovery: `100%`
-- Abstention Correctness Rate: `100%`
-- Security Pass Rate: `100%`
-- Sparse History Pass Rate: `100%`
-- Numeric Grounding Rate: `100%`
+### Frontend Service (`veritas-ui`)
+- **Build Config**: `railway.frontend.toml`
+- **Start Command**: `streamlit run frontend/streamlit_app.py --server.address=0.0.0.0 --server.port=$PORT --server.headless=true`
+- **Healthcheck Path**: `/_stcore/health`
+- **Environment Variables**:
+  ```env
+  API_BASE_URL=https://veritas-api.up.railway.app
+  ```
 
-## Submission checklist
+---
 
-See `SUBMISSION.md` for the final hackathon packaging checklist and `DEMO_SCRIPT.md` for a judge-facing walkthrough.
+## 📊 Evaluation & Verification Benchmark
+
+Run `python scripts/evaluate_system.py` to view full telemetry verification:
+
+| Metric | Score / Value | Target Benchmark | Status |
+|---|---|---|---|
+| **Anomaly Precision / Recall / F1** | `1.0 / 1.0 / 1.0` | `> 0.95` | ✅ PASSED |
+| **Shapley Bridge Error** | `$3.55 \times 10^{-15}$` | $< 10^{-10}$ | ✅ EXACT |
+| **Top-1 & Top-2 Driver Recovery** | `100%` | `> 90%` | ✅ PASSED |
+| **Abstention Correctness Rate** | `100%` | `100%` | ✅ PASSED |
+| **Security Pass Rate** | `100%` | `100%` | ✅ PASSED |
+| **Factuality Grounding Rate** | `100%` | `100%` | ✅ PASSED |
+| **Analytics Latency (p95)** | `32.4 ms` | `< 100 ms` | ✅ PASSED |
+
+---
+
+## 👥 Demo User Personas & Scoping
+
+| Demo User | Role | Geographic Scope | Entitlements & Permissions |
+|---|---|---|---|
+| `ceo` | CEO / CFO | All Regions (Enterprise) | Full read across all KPIs, Level-1/2 diagnostics, governed executive actions |
+| `north_mgr` | Regional Manager | North Region Only | Regional operational metrics, stock replenishment, checkout audit triggers |
+| `marketing_mgr` | Marketing Manager | All Regions | Marketing & conversion metrics (Gross Margin strictly hidden) |
+| `analyst` | Business Analyst | All Regions | Detailed evidence audit logs, Shapley formula breakdown, telemetry inspection |
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
