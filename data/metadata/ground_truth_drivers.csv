@@ -1,0 +1,6 @@
+incident_start,incident_end,driver,true_contribution_pct_points,true_share_of_total_delta
+2026-07-10,2026-08-20,marketing_traffic,-8.8197,0.697342
+2026-07-10,2026-08-20,checkout_funnel_degradation,-2.8505,0.22538
+2026-07-10,2026-08-20,stock_availability,-1.8909,0.149505
+2026-07-10,2026-08-20,adverse_product_mix,-0.9408,0.074384
+2026-07-10,2026-08-20,pricing_offset,1.8543,-0.146611

@@ -1,0 +1,44 @@
+actions:
+  - id: replenish_north_stock
+    diagnosis: stock_availability
+    driver: stock_availability
+    lever: inventory_reallocation
+    action: Expedite replenishment for the highest-impact stocked-out SKUs in the affected region.
+    owner: supply_chain_manager
+    allowed_requester_roles: [ceo, analyst, regional_manager, supply_chain_manager]
+    confidence: high
+    expected_impact: Potential 1.5-3.0 pp Revenue recovery if availability returns near baseline.
+    monitoring_plan: Track stock availability, orders, and revenue daily for 14 days.
+
+  - id: investigate_checkout
+    diagnosis: checkout_funnel
+    driver: checkout_funnel
+    lever: checkout_reliability
+    action: Investigate checkout completion, payment errors, and latency for the affected region and channel.
+    owner: product_manager
+    allowed_requester_roles: [ceo, analyst, regional_manager]
+    confidence: medium
+    expected_impact: Potential 0.5-1.5 pp conversion recovery if the funnel issue is confirmed and resolved.
+    monitoring_plan: Track checkout completion and conversion rate daily for 7 days.
+
+  - id: review_marketing_allocation
+    diagnosis: marketing_spend
+    driver: marketing_spend
+    lever: campaign_budget
+    action: Validate the marketing feed, then review regional budget allocation before increasing spend.
+    owner: marketing_manager
+    allowed_requester_roles: [ceo, analyst, marketing_manager]
+    confidence: low
+    expected_impact: Not reliably estimated.
+    monitoring_plan: Track sessions, spend, CAC, and revenue after feed validation.
+
+  - id: review_pricing_mix
+    diagnosis: pricing_mix_shift
+    driver: pricing_mix_shift
+    lever: promotional_pricing
+    action: Evaluate category discount depth and SKU mix strategy to rebalance unit margins against AOV.
+    owner: commercial_director
+    allowed_requester_roles: [ceo, analyst, commercial_director]
+    confidence: medium
+    expected_impact: Potential 0.5-1.0 pp AOV stabilization.
+    monitoring_plan: Monitor weekly SKU sales mix, average selling price, and gross margin.

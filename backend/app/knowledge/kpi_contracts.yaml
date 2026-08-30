@@ -1,0 +1,80 @@
+revenue:
+  name: Revenue
+  definition: Net sales revenue after discounts and returns.
+  formula: SUM(net_revenue)
+  grain: [date, region, channel]
+  source: kpi_region_daily
+  lineage: bronze.raw_orders -> silver.fact_sales_line -> gold.kpi_region_daily
+  owner: VP Commercial
+  freshness_hours: 24
+  materiality_relative_pct: 5.0
+  materiality_absolute_inr: 150000.0
+  access_restrictions: [CEO, CFO, VP_Commercial, North_Manager, South_Manager]
+  comparison_windows: [7_day_trailing, same_weekday_previous_year]
+  bridge_components:
+    traffic:
+      source_metric: sessions
+    conversion_rate:
+      formula: orders / sessions
+    aov:
+      formula: revenue / orders
+  candidate_business_drivers:
+    traffic: [marketing_spend, campaign_performance, seasonality]
+    conversion_rate: [stock_availability, checkout_funnel, pricing]
+    aov: [product_mix, pricing, discounting]
+
+orders:
+  name: Orders
+  definition: Total count of distinct completed orders.
+  formula: COUNT(DISTINCT order_id)
+  grain: [date, region, channel]
+  source: kpi_region_daily
+  lineage: bronze.raw_orders -> silver.fact_sales_line -> gold.kpi_region_daily
+  owner: VP Commercial
+  freshness_hours: 24
+  materiality_relative_pct: 5.0
+  materiality_absolute_inr: 0.0
+  access_restrictions: [CEO, CFO, VP_Commercial, North_Manager, South_Manager]
+  comparison_windows: [7_day_trailing]
+
+conversion_rate:
+  name: Conversion Rate
+  definition: Percentage of sessions that result in completed orders.
+  formula: (orders / sessions) * 100
+  grain: [date, region, channel]
+  source: kpi_region_daily
+  lineage: "[bronze.raw_marketing, bronze.raw_orders] -> gold.kpi_region_daily"
+  owner: VP Digital
+  freshness_hours: 24
+  materiality_relative_pct: 5.0
+  materiality_absolute_inr: 0.0
+  access_restrictions: [CEO, CFO, VP_Digital, North_Manager, South_Manager]
+  comparison_windows: [7_day_trailing]
+
+aov:
+  name: Average Order Value
+  definition: Average net revenue generated per order.
+  formula: revenue / orders
+  grain: [date, region, channel]
+  source: kpi_region_daily
+  lineage: bronze.raw_orders -> silver.fact_sales_line -> gold.kpi_region_daily
+  owner: VP Commercial
+  freshness_hours: 24
+  materiality_relative_pct: 4.0
+  materiality_absolute_inr: 0.0
+  access_restrictions: [CEO, CFO, VP_Commercial, North_Manager, South_Manager]
+  comparison_windows: [7_day_trailing]
+
+gross_margin:
+  name: Gross Margin
+  definition: Percentage of net revenue retained after cost of goods sold.
+  formula: (revenue - cogs) / revenue * 100
+  grain: [date, region, channel]
+  source: kpi_region_daily
+  lineage: bronze.raw_orders -> silver.fact_sales_line -> gold.kpi_region_daily
+  owner: CFO
+  freshness_hours: 24
+  materiality_relative_pct: 3.0
+  materiality_absolute_inr: 0.0
+  access_restrictions: [CEO, CFO]
+  comparison_windows: [7_day_trailing]

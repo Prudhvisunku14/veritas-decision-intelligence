@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veritas KPI — Decision Intelligence</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #FAFAFA; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #18181B; }
+    .clean-card { background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 0.75rem; }
+    .kpi-card { transition: border-color 0.15s ease, box-shadow 0.15s ease; cursor: pointer; }
+    .kpi-card:hover { border-color: #A1A1AA; }
+    .kpi-card.active { border-color: #6366F1; background-color: #FAF5FF; }
+  </style>
+</head>
+<body class="flex min-h-screen">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="w-60 bg-white border-r border-zinc-200 p-6 flex flex-col justify-between hidden lg:flex">
+    <div>
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-2 mb-8">
+        <div class="w-6 h-6 rounded bg-indigo-600 flex items-center justify-center text-white text-xs font-semibold">V</div>
+        <span class="text-base font-bold text-zinc-900 tracking-tight">Veritas<span class="text-indigo-600">KPI</span></span>
+      </div>
+
+      <!-- Feed Status -->
+      <div class="mb-6 px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg flex items-center justify-between text-xs">
+        <span class="text-zinc-500">Feeds SLA</span>
+        <span class="text-emerald-600 font-semibold flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 100%</span>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="space-y-1 text-xs font-medium text-zinc-600">
+        <a href="#" class="flex items-center gap-3 px-3 py-2 bg-zinc-100 text-zinc-900 font-semibold rounded-md"><i class="fa-solid fa-chart-line w-4 text-indigo-600"></i> Revenue</a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 hover:bg-zinc-50 rounded-md transition"><i class="fa-solid fa-cart-shopping w-4 text-zinc-400"></i> Orders</a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 hover:bg-zinc-50 rounded-md transition"><i class="fa-solid fa-stethoscope w-4 text-zinc-400"></i> Diagnosis</a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 hover:bg-zinc-50 rounded-md transition"><i class="fa-solid fa-shield-halved w-4 text-zinc-400"></i> Evidence</a>
+      </nav>
+    </div>
+
+    <!-- Active Persona -->
+    <div class="pt-4 border-t border-zinc-100 flex items-center justify-between">
+      <div>
+        <p class="text-[11px] font-semibold text-zinc-900">CEO / CFO</p>
+        <p class="text-[10px] text-zinc-400">ID: CH0</p>
+      </div>
+      <button class="text-[11px] text-indigo-600 font-medium hover:underline">Switch</button>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <main class="flex-1 flex flex-col min-w-0">
+
+    <!-- TOP HEADER -->
+    <header class="bg-white border-b border-zinc-200 px-8 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <h1 class="text-base font-bold text-zinc-900">Decision Intelligence</h1>
+        <span class="text-zinc-300">|</span>
+        <span class="text-xs text-zinc-500 font-medium">Scope: <strong class="text-zinc-800">North Region</strong></span>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="exportReport()" class="bg-white border border-zinc-200 hover:bg-zinc-50 text-zinc-700 text-xs font-medium px-3 py-1.5 rounded-md transition shadow-sm">
+          Export PDF
+        </button>
+      </div>
+    </header>
+
+    <!-- WORKSPACE CONTAINER -->
+    <div class="p-8 space-y-6 overflow-y-auto">
+
+      <!-- KPI METRIC CARDS -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        
+        <!-- Revenue Critical -->
+        <div onclick="filterByMetric('Revenue')" class="clean-card kpi-card p-4 active" id="kpi-revenue">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Revenue</span>
+            <span class="text-[10px] bg-rose-50 text-rose-600 border border-rose-200 font-semibold px-2 py-0.5 rounded">Critical</span>
+          </div>
+          <div class="text-2xl font-bold text-zinc-900">₹27.08 L</div>
+          <div class="text-xs text-rose-600 font-medium mt-1">▼ 13.8% vs exp.</div>
+          <p class="text-[11px] text-zinc-400 mt-2 border-t border-zinc-100 pt-2">Impact: -₹4.35 L</p>
+        </div>
+
+        <!-- Orders Critical -->
+        <div onclick="filterByMetric('Orders')" class="clean-card kpi-card p-4" id="kpi-orders">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Orders</span>
+            <span class="text-[10px] bg-rose-50 text-rose-600 border border-rose-200 font-semibold px-2 py-0.5 rounded">Critical</span>
+          </div>
+          <div class="text-2xl font-bold text-zinc-900">363</div>
+          <div class="text-xs text-rose-600 font-medium mt-1">▼ 13.3% vs exp.</div>
+          <p class="text-[11px] text-zinc-400 mt-2 border-t border-zinc-100 pt-2">Exp: 419 | Mat: 1.00</p>
+        </div>
+
+        <!-- Conversion Warning -->
+        <div onclick="filterByMetric('Conversion')" class="clean-card kpi-card p-4" id="kpi-conversion">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Conversion</span>
+            <span class="text-[10px] bg-amber-50 text-amber-600 border border-amber-200 font-semibold px-2 py-0.5 rounded">Warning</span>
+          </div>
+          <div class="text-2xl font-bold text-zinc-900">3.89%</div>
+          <div class="text-xs text-amber-600 font-medium mt-1">▼ 9.5% vs exp.</div>
+          <p class="text-[11px] text-zinc-400 mt-2 border-t border-zinc-100 pt-2">Exp: 4.30% | Mat: 0.36</p>
+        </div>
+
+        <!-- AOV Optimal -->
+        <div onclick="filterByMetric('AOV')" class="clean-card kpi-card p-4" id="kpi-aov">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">AOV</span>
+            <span class="text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200 font-semibold px-2 py-0.5 rounded">Optimal</span>
+          </div>
+          <div class="text-2xl font-bold text-zinc-900">₹7,460</div>
+          <div class="text-xs text-emerald-600 font-medium mt-1">▲ 0.6% vs exp.</div>
+          <p class="text-[11px] text-zinc-400 mt-2 border-t border-zinc-100 pt-2">Exp: ₹7,415 | Mat: 0.05</p>
+        </div>
+
+        <!-- Margin Optimal -->
+        <div onclick="filterByMetric('Margin')" class="clean-card kpi-card p-4" id="kpi-margin">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Gross Margin</span>
+            <span class="text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200 font-semibold px-2 py-0.5 rounded">Optimal</span>
+          </div>
+          <div class="text-2xl font-bold text-zinc-900">31.27%</div>
+          <div class="text-xs text-emerald-600 font-medium mt-1">▲ 1.5% vs exp.</div>
+          <p class="text-[11px] text-zinc-400 mt-2 border-t border-zinc-100 pt-2">Exp: 30.82% | Mat: 0.01</p>
+        </div>
+
+      </section>
+
+      <!-- TREND CHART & ANOMALY PANEL -->
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Holt-Winters Revenue Chart -->
+        <div class="clean-card p-6 lg:col-span-2 flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-sm font-bold text-zinc-900">Revenue Performance vs Baseline</h2>
+              <p class="text-xs text-zinc-400">120-Day Daily Trend (Holt-Winters Model)</p>
+            </div>
+            <div class="flex items-center gap-4 text-xs font-medium">
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span> Actual</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-zinc-300"></span> Expected</span>
+            </div>
+          </div>
+          <div class="h-64">
+            <canvas id="veritasChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Incident Anomaly Summary -->
+        <div class="clean-card p-6 flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-rose-600 block mb-1">Incident Summary</span>
+            <h3 class="text-sm font-bold text-zinc-900 mb-1">North Revenue Deterioration</h3>
+            <div class="text-3xl font-bold text-rose-600 mb-2">-13.84%</div>
+            <p class="text-xs text-zinc-600 font-medium">Financial Impact: <strong class="text-rose-600">-₹4.35 L vs baseline</strong></p>
+
+            <div class="mt-6 space-y-4 border-t border-zinc-100 pt-4">
+              <div>
+                <div class="flex justify-between text-xs font-medium mb-1.5">
+                  <span class="text-zinc-500">Materiality Score</span>
+                  <span class="text-zinc-900 font-bold">0.69 / 1.00 (High)</span>
+                </div>
+                <div class="w-full bg-zinc-100 h-1.5 rounded-full overflow-hidden">
+                  <div class="bg-rose-500 h-full rounded-full" style="width: 69%"></div>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between text-xs p-3 bg-zinc-50 border border-zinc-200/80 rounded-lg">
+                <span class="text-zinc-600 font-medium">Evidence Confidence (ECS)</span>
+                <span class="bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-semibold px-2 py-0.5 rounded">Medium (0.71)</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-[10px] text-zinc-400 mt-4 italic">Reflects evidence quality, not a probability percentage.</p>
+        </div>
+
+      </section>
+
+      <!-- SHAPLEY BRIDGE & ROOT CAUSE MATRIX -->
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Level-1 Shapley Bridge -->
+        <div class="clean-card p-6">
+          <h2 class="text-sm font-bold text-zinc-900 mb-1">Level 1 — What Moved Revenue?</h2>
+          <p class="text-xs text-zinc-400 mb-5">Multiplicative Shapley KPI Attribution</p>
+          
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between text-xs font-medium mb-1.5">
+                <span class="text-zinc-700">Conversion Rate</span>
+                <span class="text-rose-600 font-bold">-9.27 pp (-₹2.91 L)</span>
+              </div>
+              <div class="w-full bg-zinc-100 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-rose-500 h-full rounded-full" style="width: 67%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-medium mb-1.5">
+                <span class="text-zinc-700">Traffic</span>
+                <span class="text-rose-600 font-bold">-3.98 pp (-₹1.25 L)</span>
+              </div>
+              <div class="w-full bg-zinc-100 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-rose-400 h-full rounded-full" style="width: 29%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-medium mb-1.5">
+                <span class="text-zinc-700">AOV Contribution</span>
+                <span class="text-rose-600 font-bold">-0.59 pp (-₹0.19 L)</span>
+              </div>
+              <div class="w-full bg-zinc-100 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-rose-300 h-full rounded-full" style="width: 4%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 p-2 bg-zinc-50 border border-zinc-200/60 rounded text-[10px] font-mono text-zinc-400 text-center">
+            Sum = -13.8369375 | Error = 3.55e-15
+          </div>
+        </div>
+
+        <!-- Governed Root Cause Matrix -->
+        <div class="clean-card p-6 lg:col-span-2">
+          <h2 class="text-sm font-bold text-zinc-900 mb-1">Governed Root-Cause Matrix</h2>
+          <p class="text-xs text-zinc-400 mb-4">Level 2 Business Driver Diagnostics</p>
+          
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-zinc-50 text-zinc-500 border-y border-zinc-200">
+                <tr>
+                  <th class="py-2.5 px-3 font-semibold">Variance Factor</th>
+                  <th class="py-2.5 px-3 font-semibold">Impact</th>
+                  <th class="py-2.5 px-3 font-semibold">Diagnosis Vector</th>
+                  <th class="py-2.5 px-3 font-semibold">Confidence</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-zinc-100 text-zinc-700">
+                <tr>
+                  <td class="py-3 px-3 font-semibold text-zinc-900">Conversion Drop</td>
+                  <td class="py-3 px-3 text-rose-600 font-bold">-9.27 pp (-₹2.91 L)</td>
+                  <td class="py-3 px-3">Checkout funnel friction & latency candidate</td>
+                  <td class="py-3 px-3"><span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded text-[10px] font-bold">0.96 (High)</span></td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-3 font-semibold text-zinc-900">Inventory Stockout</td>
+                  <td class="py-3 px-3 text-rose-600 font-bold">-3.98 pp (-₹1.25 L)</td>
+                  <td class="py-3 px-3">Stockout on top 5 regional SKUs</td>
+                  <td class="py-3 px-3"><span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded text-[10px] font-bold">0.98 (High)</span></td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-3 font-semibold text-zinc-900">Pricing Mix Shift</td>
+                  <td class="py-3 px-3 text-rose-600 font-bold">-0.59 pp (-₹0.19 L)</td>
+                  <td class="py-3 px-3">Shift toward lower-tier product bundles</td>
+                  <td class="py-3 px-3"><span class="bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded text-[10px] font-bold">0.71 (Medium)</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- AI INSIGHT & EXECUTIVE ACTIONS -->
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Grounded Insight -->
+        <div class="clean-card p-6 lg:col-span-2">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+            <h2 class="text-sm font-bold text-zinc-900">AI Executive Insight</h2>
+          </div>
+          <p class="text-xs leading-relaxed text-zinc-600 bg-zinc-50 border border-zinc-200/80 p-4 rounded-lg">
+            Executive Summary for <strong>North Region</strong>: Revenue changed by <strong>-13.8%</strong> versus expected baseline, representing a net business impact of <strong>-INR 4.35 Lakhs</strong>. Level 1 Shapley bridge attributes mathematical movement to <strong>Traffic (-4.0 pp)</strong>, <strong>Conversion (-9.3 pp)</strong>, and <strong>AOV (-0.6 pp)</strong>. Level 2 business driver diagnosis identifies <em>pricing mix shift (confidence 0.98)</em> and <em>checkout funnel (confidence 0.96)</em> as leading root-cause candidates. Evidence Confidence Score is <strong>0.71 (MEDIUM)</strong>.
+          </p>
+        </div>
+
+        <!-- Governed Actions -->
+        <div class="clean-card p-6 flex flex-col justify-between">
+          <div>
+            <h2 class="text-sm font-bold text-zinc-900 mb-3">Governed Executive Actions</h2>
+            <div class="space-y-3">
+              <div class="p-3 bg-zinc-50 border border-zinc-200 rounded-lg">
+                <div class="flex justify-between items-center mb-1">
+                  <span class="text-xs font-semibold text-zinc-900">replenish_north_stock</span>
+                  <span class="text-[9px] bg-emerald-50 text-emerald-700 font-bold px-1.5 py-0.5 rounded">High Conf</span>
+                </div>
+                <p class="text-[11px] text-zinc-500 mb-3">Expedite stock transfer for 5 out-of-stock SKUs.</p>
+                <button onclick="triggerAction('Action Executed: replenish_north_stock')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium py-1.5 rounded-md transition">
+                  Execute Replenishment
+                </button>
+              </div>
+
+              <div class="p-3 bg-zinc-50 border border-zinc-200 rounded-lg">
+                <div class="flex justify-between items-center mb-1">
+                  <span class="text-xs font-semibold text-zinc-900">investigate_checkout</span>
+                  <span class="text-[9px] bg-amber-50 text-amber-700 font-bold px-1.5 py-0.5 rounded">Medium</span>
+                </div>
+                <p class="text-[11px] text-zinc-500 mb-3">Audit payment latency on North mobile checkouts.</p>
+                <button onclick="triggerAction('Action Executed: investigate_checkout')" class="w-full bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-medium py-1.5 rounded-md transition">
+                  Trigger Funnel Audit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- MODAL -->
+  <div id="clarityModal" class="fixed inset-0 bg-zinc-900/30 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
+    <div class="clean-card max-w-sm w-full p-6 text-center shadow-lg">
+      <div class="w-8 h-8 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-3">
+        <i class="fa-solid fa-check text-xs"></i>
+      </div>
+      <h3 id="modalTitle" class="text-sm font-bold text-zinc-900 mb-1">Command Dispatched</h3>
+      <p id="modalMessage" class="text-xs text-zinc-500 mb-5">Command executed safely with governance logging.</p>
+      <button onclick="closeModal()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-medium py-2 rounded-md transition">
+        Dismiss
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('veritasChart').getContext('2d');
+    
+    const labels = ['May 3', 'May 17', 'May 31', 'Jun 14', 'Jun 28', 'Jul 12', 'Jul 26', 'Aug 9'];
+    const expectedData = [1.2, 1.25, 1.22, 1.28, 1.24, 3.10, 3.15, 3.12];
+    const actualData = [1.18, 1.22, 1.20, 1.25, 1.21, 1.15, 1.05, 0.98];
+
+    let veritasChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Actual Revenue',
+            data: actualData,
+            borderColor: '#4F46E5',
+            borderWidth: 2,
+            tension: 0.2,
+            pointRadius: 3,
+            pointBackgroundColor: '#4F46E5'
+          },
+          {
+            label: 'Expected Baseline',
+            data: expectedData,
+            borderColor: '#D4D4D8',
+            borderWidth: 2,
+            borderDash: [4, 4],
+            tension: 0.2,
+            pointRadius: 0
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#A1A1AA', font: { size: 10 } } },
+          y: { grid: { color: '#F4F4F5' }, ticks: { color: '#A1A1AA', font: { size: 10 }, callback: v => v + 'M' } }
+        }
+      }
+    });
+
+    function filterByMetric(metric) {
+      document.querySelectorAll('.kpi-card').forEach(el => el.classList.remove('active'));
+      const activeCard = document.getElementById(`kpi-${metric.toLowerCase()}`);
+      if (activeCard) activeCard.classList.add('active');
+    }
+
+    function triggerAction(msg) {
+      document.getElementById('modalMessage').innerText = msg;
+      document.getElementById('clarityModal').classList.remove('hidden');
+      document.getElementById('clarityModal').classList.add('flex');
+    }
+
+    function closeModal() {
+      document.getElementById('clarityModal').classList.add('hidden');
+      document.getElementById('clarityModal').classList.remove('flex');
+    }
+
+    function exportReport() {
+      triggerAction("Generating PDF export for Governance Audit Report...");
+    }
+  </script>
+</body>
+</html>

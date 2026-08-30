@@ -1,0 +1,12 @@
+feedback_id,created_at,user_id,insight_id,rating,comment,status
+eebbccb1-6aca-4730-9fe4-51629523374b,2026-08-29T15:54:11.953179+00:00,ceo,ins_test_123,5,Accurate breakdown of stockout impact.,queued_for_validation
+f524ac42-0847-40f6-8e43-f73a39cbbea5,2026-08-29T15:54:37.195407+00:00,ceo,ins_test_123,5,Accurate breakdown of stockout impact.,queued_for_validation
+385ed409-dcc1-4c27-bb36-8b5b1c85e110,2026-08-29T15:56:19.271985+00:00,ceo,ins_test_123,5,Accurate breakdown of stockout impact.,queued_for_validation
+3fa70fc2-878b-47ca-bb43-038c373671a1,2026-08-29T15:56:29.134583+00:00,ins_test_456,ceo,up,,,Accurate bridge decomposition.,,queued_for_validation
+c6c746e8-f88b-4b5b-b75c-3153e790f058,2026-08-29T15:57:05.082352+00:00,ceo,ins_test_123,5,Accurate breakdown of stockout impact.,queued_for_validation
+802d7aeb-4a29-41d8-91cf-b37cf76eea20,2026-08-29T15:57:15.072214+00:00,ins_test_456,ceo,up,,,Accurate bridge decomposition.,,queued_for_validation
+c1d0a372-00d3-4975-8e48-b4d0b1a26bea,2026-08-29T16:51:47.605024+00:00,ceo,ins_test_123,5,Accurate breakdown of stockout impact.,queued_for_validation
+d5b8d885-ca19-4d32-9f37-7a304038177c,2026-08-29T16:51:58.905829+00:00,ins_test_456,ceo,up,,,Accurate bridge decomposition.,,queued_for_validation
+614bc719-8dd4-4989-9343-c90f0bb4db2c,2026-08-29T17:09:46.552834+00:00,ins_b853c31bbcad,ceo,up,,,,,queued_for_validation
+e71d0c61-2bec-4915-99b1-fc811302c3af,2026-08-29T17:11:25.896964+00:00,ceo,ins_test_123,5,Accurate breakdown of stockout impact.,queued_for_validation
+afbef303-e85e-4038-a4c4-52c3e82793ff,2026-08-29T17:11:34.154609+00:00,ins_test_456,ceo,up,,,Accurate bridge decomposition.,,queued_for_validation
