@@ -37,416 +37,76 @@ if "chat_open" not in st.session_state:
 if "chat_messages" not in st.session_state:
     st.session_state.chat_messages = []
 
-# Enterprise Custom Design System CSS
+# Enterprise Custom Design System CSS — Clean Theme
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    
-    html, body, [class*="css"] {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        background-color: #F4F6FC;
-        color: #1E2433;
-    }
-    
-    .stApp {
-        background-color: #F4F6FC;
-    }
-
-    .block-container {
-        padding-top: 1rem;
-        padding-bottom: 1.5rem;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        max-width: 100%;
-    }
-
-    /* -------------------------------------------------------------------------
-       1. LANDING PAGE & PERSONA SELECTOR STYLES
-       ------------------------------------------------------------------------- */
-    /* ── LANDING PAGE: full-height split ── */
-    .landing-root {
-        display: flex;
-        min-height: calc(100vh - 80px);
-        gap: 0;
-    }
-
-    .landing-brand-panel {
-        background: linear-gradient(155deg, #1a1744 0%, #2d2a7a 45%, #5a4fc9 100%);
-        border-radius: 20px;
-        padding: 3rem 2.4rem;
-        color: #FFFFFF;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        box-shadow: 0 16px 40px rgba(90, 79, 201, 0.25);
-    }
-
-    .brand-logo-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45rem;
-        background: rgba(255,255,255,0.12);
-        border: 1px solid rgba(255,255,255,0.25);
-        border-radius: 30px;
-        padding: 0.3rem 0.85rem;
-        font-size: 0.7rem;
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: #C7D2FE;
-        margin-bottom: 1.6rem;
-    }
-
-    .brand-dot {
-        width: 7px; height: 7px;
-        background: #A7F3D0;
-        border-radius: 50%;
-        display: inline-block;
-        animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse {
-        0%,100%{opacity:1;transform:scale(1)}
-        50%{opacity:0.5;transform:scale(0.8)}
-    }
-
-    .brand-headline {
-        font-size: 2.25rem;
-        font-weight: 800;
-        line-height: 1.2;
-        letter-spacing: -0.03em;
-        color: #FFFFFF;
-        margin-bottom: 1.1rem;
-    }
-
-    .brand-subtext {
-        font-size: 0.92rem;
-        line-height: 1.65;
-        color: #A5B4FC;
-        margin-bottom: 2rem;
-    }
-
-    .brand-divider {
-        border: none;
-        border-top: 1px solid rgba(255,255,255,0.12);
-        margin: 1.4rem 0;
-    }
-
-    .brand-features {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .brand-features li {
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #C7D2FE;
-        margin-bottom: 0.65rem;
-        display: flex;
-        align-items: center;
-        gap: 0.55rem;
-    }
-
-    .brand-check {
-        color: #A7F3D0;
-        font-weight: 800;
-        font-size: 0.9rem;
-    }
-
-    .brand-footer-note {
-        font-size: 0.7rem;
-        color: rgba(255,255,255,0.35);
-        margin-top: 2rem;
-        letter-spacing: 0.04em;
-    }
-
-    /* ── RIGHT PANEL ── */
-    .persona-panel {
-        padding: 2rem 2rem 2rem 2.5rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .persona-section-title {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: #1E1B4B;
-        letter-spacing: -0.025em;
-        margin: 0 0 0.25rem 0;
-    }
-
-    .persona-section-sub {
-        font-size: 0.85rem;
-        color: #64748B;
-        margin-bottom: 1.4rem;
-    }
-
-    /* ── PERSONA CARDS ── */
-    .persona-card {
-        background: #FFFFFF;
-        border: 1.5px solid #E4E9F5;
-        border-radius: 15px;
-        padding: 1.1rem 1.3rem 1rem 1.3rem;
-        margin-bottom: 0.9rem;
-        box-shadow: 0 3px 12px rgba(0,0,0,0.04);
-        transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
-        cursor: pointer;
-    }
-    .persona-card:hover {
-        border-color: #6256D8;
-        box-shadow: 0 8px 28px rgba(98,86,216,0.13);
-        background: #FAFAFF;
-    }
-    .persona-card-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 0.3rem;
-    }
-    .persona-card-title {
-        font-size: 1.0rem;
-        font-weight: 700;
-        color: #1E2433;
-        line-height: 1.2;
-    }
-    .persona-card-sub {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #6256D8;
-        margin-top: 0.1rem;
-    }
-    .persona-card-badges {
-        display: flex;
-        gap: 0.3rem;
-        flex-shrink: 0;
-    }
-    .persona-card-desc {
-        font-size: 0.8rem;
-        color: #475569;
-        line-height: 1.45;
-        margin: 0.45rem 0 0.7rem 0;
-    }
-
-    /* badge variants */
-    .badge-scope   { background:#EEF2FF; color:#4F46E5; border:1px solid #C7D2FE; }
-    .badge-scope-north  { background:#FEF3C7; color:#92400E; border:1px solid #FDE68A; }
-    .badge-scope-analyst{ background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; }
-    .badge-access  { background:#F8FAFC; color:#475569; border:1px solid #E2E8F0; }
-    .badge-scope, .badge-scope-north, .badge-scope-analyst, .badge-access {
-        font-size: 0.65rem; font-weight: 700; padding: 0.16rem 0.48rem;
-        border-radius: 5px; letter-spacing: 0.04em; white-space: nowrap;
-    }
-
-    /* Streamlit button overrides — scoped to landing only */
-    div[data-testid="stButton"] > button[kind="primary"] {
-        background: linear-gradient(90deg, #5046E4, #6256D8) !important;
-        border: none !important;
-        border-radius: 8px !important;
-        font-size: 0.8rem !important;
-        font-weight: 700 !important;
-        letter-spacing: 0.04em !important;
-        padding: 0.45rem 1rem !important;
-        box-shadow: 0 3px 10px rgba(90,79,201,0.25) !important;
-        transition: opacity 0.15s !important;
-        width: 100% !important;
-    }
-    div[data-testid="stButton"] > button[kind="primary"]:hover {
-        opacity: 0.88 !important;
-    }
-
-    /* -------------------------------------------------------------------------
-       2. DASHBOARD SHELL & COMPONENT STYLES
-       ------------------------------------------------------------------------- */
-    .header-bar {
-        background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4338CA 100%);
-        border-radius: 12px;
-        padding: 0.85rem 1.3rem;
-        color: #FFFFFF;
-        margin-bottom: 1rem;
-        box-shadow: 0 6px 16px rgba(30, 27, 75, 0.12);
-    }
-    .header-title {
-        font-size: 1.4rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        margin: 0;
-        color: #FFFFFF;
-    }
-    .header-badge {
-        background: rgba(255, 255, 255, 0.18);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 20px;
-        padding: 0.15rem 0.6rem;
-        font-size: 0.72rem;
-        font-weight: 600;
-        letter-spacing: 0.04em;
-        color: #E0E7FF;
-        margin-left: 0.6rem;
-        vertical-align: middle;
-    }
-    .header-subtitle {
-        font-size: 0.82rem;
-        color: #C7D2FE;
-        margin-top: 0.15rem;
-    }
-
-    .card-container {
-        background: #FFFFFF;
-        border: 1px solid #E7EAF3;
-        border-radius: 10px;
-        padding: 1.1rem;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.025);
-        margin-bottom: 1rem;
-        height: 100%;
-    }
-    
-    .kpi-card {
-        background: #FFFFFF;
-        border: 1px solid #E7EAF3;
-        border-radius: 10px;
-        padding: 0.85rem 1rem;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-        transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-    .kpi-card:hover {
-        box-shadow: 0 5px 14px rgba(101, 88, 211, 0.08);
-        border-color: #C7D2FE;
-    }
-    .kpi-label {
-        font-size: 0.72rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: #667085;
-        margin-bottom: 0.3rem;
-    }
-    .kpi-value {
-        font-size: 1.45rem;
-        font-weight: 700;
-        color: #1E2433;
-        letter-spacing: -0.02em;
-        margin-bottom: 0.15rem;
-    }
-    .kpi-delta-pos {
-        color: #10B981;
-        font-weight: 600;
-        font-size: 0.82rem;
-    }
-    .kpi-delta-neg {
-        color: #EF4444;
-        font-weight: 600;
-        font-size: 0.82rem;
-    }
-    .kpi-sub {
-        font-size: 0.75rem;
-        color: #667085;
-        margin-top: 0.25rem;
-    }
-
-    .badge-high {
-        background: #ECFDF5;
-        color: #065F46;
-        border: 1px solid #A7F3D0;
-        font-size: 0.72rem;
-        font-weight: 600;
-        padding: 0.15rem 0.5rem;
-        border-radius: 6px;
-    }
-    .badge-medium {
-        background: #FFFBEB;
-        color: #92400E;
-        border: 1px solid #FDE68A;
-        font-size: 0.72rem;
-        font-weight: 600;
-        padding: 0.15rem 0.5rem;
-        border-radius: 6px;
-    }
-    .badge-low {
-        background: #FEF2F2;
-        color: #991B1B;
-        border: 1px solid #FCA5A5;
-        font-size: 0.72rem;
-        font-weight: 600;
-        padding: 0.15rem 0.5rem;
-        border-radius: 6px;
-    }
-
-    .panel-header {
-        font-size: 1.05rem;
-        font-weight: 700;
-        color: #1E2433;
-        margin-bottom: 0.15rem;
-    }
-    .panel-sub {
-        font-size: 0.8rem;
-        color: #667085;
-        margin-bottom: 0.85rem;
-    }
-
-    .diag-card {
-        background: #F8FAFC;
-        border-left: 4px solid #6558D3;
-        border-radius: 8px;
-        padding: 0.85rem 1rem;
-        margin-bottom: 0.7rem;
-    }
-    .diag-card-warn {
-        background: #FFFBEB;
-        border-left: 4px solid #F59E0B;
-        border-radius: 8px;
-        padding: 0.85rem 1rem;
-        margin-bottom: 0.7rem;
-    }
-
-    .action-card {
-        background: #FFFFFF;
-        border: 1px solid #E7EAF3;
-        border-top: 3px solid #6558D3;
-        border-radius: 10px;
-        padding: 1rem;
-        margin-bottom: 0.75rem;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-    }
-
-    .abstain-banner {
-        background: #FFFBEB;
-        border: 1px solid #FDE68A;
-        border-radius: 10px;
-        padding: 0.9rem 1.1rem;
-        margin-bottom: 1rem;
-        color: #78350F;
-    }
-
-    .insight-box {
-        background: #F5F3FF;
-        border: 1px solid #DDD6FE;
-        border-radius: 10px;
-        padding: 1.1rem 1.25rem;
-        margin-bottom: 1rem;
-    }
-
-    /* Sidebar Custom Styling */
-    .sidebar-persona-badge {
-        background: #1E1B4B;
-        color: #FFFFFF;
-        padding: 0.8rem 1rem;
-        border-radius: 10px;
-        margin-bottom: 1.2rem;
-        border: 1px solid #312E81;
-    }
-    .sidebar-persona-role {
-        font-size: 0.95rem;
-        font-weight: 700;
-        color: #FFFFFF;
-    }
-    .sidebar-persona-meta {
-        font-size: 0.75rem;
-        color: #C7D2FE;
-        margin-top: 0.2rem;
-    }
+    html,body,[class*="css"]{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background-color:#FAFAFA;color:#18181B;}
+    .stApp{background-color:#FAFAFA;}
+    .block-container{padding-top:1rem;padding-bottom:1.5rem;padding-left:1.5rem;padding-right:1.5rem;max-width:100%;}
+    .landing-brand-panel{background:linear-gradient(155deg,#1e1b4b 0%,#3730a3 50%,#4f46e5 100%);border-radius:16px;padding:3rem 2.4rem;color:#fff;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 12px 32px rgba(79,70,229,.2);}
+    .brand-logo-badge{display:inline-flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:30px;padding:.3rem .85rem;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#c7d2fe;margin-bottom:1.6rem;}
+    .brand-dot{width:7px;height:7px;background:#6ee7b7;border-radius:50%;display:inline-block;animation:pulse 2s ease-in-out infinite;}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+    .brand-headline{font-size:2.1rem;font-weight:800;line-height:1.2;letter-spacing:-.03em;color:#fff;margin-bottom:1rem;}
+    .brand-subtext{font-size:.9rem;line-height:1.65;color:#a5b4fc;margin-bottom:2rem;}
+    .brand-divider{border:none;border-top:1px solid rgba(255,255,255,.1);margin:1.4rem 0;}
+    .brand-features{list-style:none;padding:0;margin:0;}
+    .brand-features li{font-size:.85rem;font-weight:500;color:#c7d2fe;margin-bottom:.6rem;display:flex;align-items:center;gap:.55rem;}
+    .brand-check{color:#6ee7b7;font-weight:800;}
+    .brand-footer-note{font-size:.68rem;color:rgba(255,255,255,.3);margin-top:2rem;letter-spacing:.04em;}
+    .persona-section-title{font-size:1.45rem;font-weight:800;color:#18181B;letter-spacing:-.025em;margin:0 0 .2rem 0;}
+    .persona-section-sub{font-size:.85rem;color:#71717a;margin-bottom:1.4rem;}
+    .persona-card{background:#fff;border:1.5px solid #e4e4e7;border-radius:12px;padding:1.1rem 1.3rem;margin-bottom:.85rem;box-shadow:0 1px 4px rgba(0,0,0,.04);transition:border-color .15s,box-shadow .15s;}
+    .persona-card:hover{border-color:#6366f1;box-shadow:0 4px 16px rgba(99,102,241,.1);}
+    .persona-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.3rem;}
+    .persona-card-title{font-size:.95rem;font-weight:700;color:#18181B;}
+    .persona-card-sub{font-size:.73rem;font-weight:600;color:#6366f1;margin-top:.1rem;}
+    .persona-card-badges{display:flex;gap:.3rem;flex-shrink:0;}
+    .persona-card-desc{font-size:.78rem;color:#52525b;line-height:1.45;margin:.4rem 0 .7rem 0;}
+    .badge-scope{background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;}
+    .badge-scope-north{background:#fef3c7;color:#92400e;border:1px solid #fde68a;}
+    .badge-scope-analyst{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;}
+    .badge-access{background:#f4f4f5;color:#52525b;border:1px solid #e4e4e7;}
+    .badge-scope,.badge-scope-north,.badge-scope-analyst,.badge-access{font-size:.63rem;font-weight:700;padding:.14rem .45rem;border-radius:5px;letter-spacing:.04em;white-space:nowrap;}
+    div[data-testid="stButton"]>button[kind="primary"]{background:#4f46e5!important;border:none!important;border-radius:8px!important;font-size:.78rem!important;font-weight:600!important;padding:.45rem 1rem!important;transition:background .15s!important;width:100%!important;}
+    div[data-testid="stButton"]>button[kind="primary"]:hover{background:#4338ca!important;}
+    .header-bar{background:#fff;border:1px solid #e4e4e7;border-radius:10px;padding:.85rem 1.3rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+    .header-title{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;margin:0;color:#18181B;}
+    .header-badge{background:#eef2ff;border:1px solid #c7d2fe;border-radius:20px;padding:.12rem .6rem;font-size:.68rem;font-weight:700;letter-spacing:.04em;color:#4f46e5;margin-left:.6rem;vertical-align:middle;}
+    .header-subtitle{font-size:.78rem;color:#71717a;margin-top:.15rem;}
+    .card-container{background:#fff;border:1px solid #e4e4e7;border-radius:10px;padding:1.1rem;box-shadow:0 1px 3px rgba(0,0,0,.03);margin-bottom:1rem;height:100%;}
+    .kpi-card{background:#fff;border:1px solid #e4e4e7;border-radius:10px;padding:.9rem 1rem;box-shadow:0 1px 3px rgba(0,0,0,.03);transition:border-color .15s,box-shadow .15s;}
+    .kpi-card:hover{border-color:#a1a1aa;box-shadow:0 4px 12px rgba(0,0,0,.06);}
+    .kpi-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#71717a;margin-bottom:.3rem;}
+    .kpi-value{font-size:1.5rem;font-weight:700;color:#18181B;letter-spacing:-.02em;margin-bottom:.15rem;}
+    .kpi-delta-pos{color:#059669;font-weight:600;font-size:.78rem;}
+    .kpi-delta-neg{color:#e11d48;font-weight:600;font-size:.78rem;}
+    .kpi-sub{font-size:.7rem;color:#a1a1aa;margin-top:.25rem;border-top:1px solid #f4f4f5;padding-top:.4rem;}
+    .badge-critical{background:#fff1f2;color:#e11d48;border:1px solid #fecdd3;font-size:.63rem;font-weight:700;padding:.14rem .5rem;border-radius:5px;letter-spacing:.03em;}
+    .badge-warning{background:#fffbeb;color:#d97706;border:1px solid #fde68a;font-size:.63rem;font-weight:700;padding:.14rem .5rem;border-radius:5px;letter-spacing:.03em;}
+    .badge-optimal{background:#ecfdf5;color:#059669;border:1px solid #a7f3d0;font-size:.63rem;font-weight:700;padding:.14rem .5rem;border-radius:5px;letter-spacing:.03em;}
+    .badge-high{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;font-size:.68rem;font-weight:600;padding:.14rem .5rem;border-radius:5px;}
+    .badge-medium{background:#fffbeb;color:#92400e;border:1px solid #fde68a;font-size:.68rem;font-weight:600;padding:.14rem .5rem;border-radius:5px;}
+    .badge-low{background:#fff1f2;color:#991b1b;border:1px solid #fecdd3;font-size:.68rem;font-weight:600;padding:.14rem .5rem;border-radius:5px;}
+    .panel-header{font-size:.9rem;font-weight:700;color:#18181B;margin-bottom:.15rem;}
+    .panel-sub{font-size:.75rem;color:#71717a;margin-bottom:.85rem;}
+    .diag-card{background:#f9f9fb;border-left:3px solid #6366f1;border-radius:8px;padding:.8rem 1rem;margin-bottom:.65rem;}
+    .diag-card-warn{background:#fffbeb;border-left:3px solid #f59e0b;border-radius:8px;padding:.8rem 1rem;margin-bottom:.65rem;}
+    .action-card{background:#fff;border:1px solid #e4e4e7;border-top:3px solid #4f46e5;border-radius:10px;padding:1rem;margin-bottom:.75rem;}
+    .abstain-banner{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:.9rem 1.1rem;margin-bottom:1rem;color:#78350f;}
+    .insight-box{background:#f9f9fb;border:1px solid #e4e4e7;border-radius:10px;padding:1rem 1.2rem;margin-bottom:1rem;}
+    .sidebar-persona-badge{background:#f4f4f5;border:1px solid #e4e4e7;border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;}
+    .sidebar-persona-role{font-size:.9rem;font-weight:700;color:#18181B;}
+    .sidebar-persona-meta{font-size:.72rem;color:#71717a;margin-top:.2rem;}
+    .rc-table{width:100%;border-collapse:collapse;font-size:.78rem;}
+    .rc-table th{background:#f9f9fb;color:#71717a;font-weight:600;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;padding:.65rem .75rem;border-top:1px solid #e4e4e7;border-bottom:1px solid #e4e4e7;text-align:left;}
+    .rc-table td{padding:.75rem;color:#3f3f46;border-bottom:1px solid #f4f4f5;vertical-align:middle;}
+    .rc-table td:first-child{font-weight:600;color:#18181B;}
+    .rc-table tr:last-child td{border-bottom:none;}
 </style>
 """, unsafe_allow_html=True)
+
 
 # ==============================================================================
 # ROUTING CONTROLLER
