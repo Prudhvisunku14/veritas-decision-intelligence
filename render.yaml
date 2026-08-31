@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: veritas-backend
+    runtime: python
+    region: singapore
+    plan: free
+    branch: master
+    buildCommand: pip install -r requirements.txt && python scripts/bootstrap.py
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DUCKDB_PATH
+        value: data/veritas_kpi.duckdb
+      - key: LLM_PROVIDER
+        value: gemini
+      - key: GEMINI_MODEL
+        value: gemini-1.5-flash
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: PYTHON_VERSION
+        value: "3.11.0"
