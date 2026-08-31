@@ -1,11 +1,26 @@
 # 🛡️ Veritas KPI — Evidence-Grounded Decision Intelligence Engine
 
+[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Streamlit%20Cloud-FF4B4B?style=for-the-badge)](https://veritas-decision-intelligencegit-dbt89zj7mutxfzxzoucf7j.streamlit.app/)
+[![API Health](https://img.shields.io/badge/API-Render%20Free-46E3B7?style=for-the-badge)](https://veritas-decision-intelligence.onrender.com/health)
+
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.116.1-009688.svg)](https://fastapi.tiangolo.com/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.49.1-FF4B4B.svg)](https://streamlit.io/)
-[![DuckDB](https://img.shields.io/badge/DuckDB-1.3.2-FFF000.svg)](https://duckdb.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115.6-009688.svg)](https://fastapi.tiangolo.com/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.40.2-FF4B4B.svg)](https://streamlit.io/)
+[![DuckDB](https://img.shields.io/badge/DuckDB-1.1.3-FFF000.svg)](https://duckdb.org/)
 [![Gemini 1.5 Flash](https://img.shields.io/badge/LLM-Gemini%201.5%20Flash-4285F4.svg)](https://aistudio.google.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+## 🌐 Live Deployment
+
+| Service | URL | Platform |
+|---|---|---|
+| **Frontend (Dashboard)** | [veritas-decision-intelligencegit-dbt89zj7mutxfzxzoucf7j.streamlit.app](https://veritas-decision-intelligencegit-dbt89zj7mutxfzxzoucf7j.streamlit.app/) | Streamlit Community Cloud |
+| **Backend (API)** | [veritas-decision-intelligence.onrender.com](https://veritas-decision-intelligence.onrender.com) | Render Free Tier |
+| **API Docs** | [/docs](https://veritas-decision-intelligence.onrender.com/docs) | FastAPI Swagger UI |
+| **Health Check** | [/health](https://veritas-decision-intelligence.onrender.com/health) | FastAPI |
+
+> ⚠️ **Note:** The backend runs on Render's free tier and may take **20-40 seconds to wake up** on first request after inactivity. The dashboard shows a loading spinner during warm-up.
+
 
 **Veritas KPI** is an enterprise-grade, evidence-grounded decision engine designed to solve the critical flaw of AI in business analytics: **LLM hallucination, ungrounded numbers, and lack of mathematical attribution.**
 
@@ -193,30 +208,33 @@ LLM_PROVIDER=template
 
 ---
 
-## ☁️ Production Cloud Deployment (Railway)
+## ☁️ Production Cloud Deployment (Free Tier)
 
-Veritas is pre-configured for instant dual-service deployment on **[Railway.app](https://railway.app)**.
+Veritas is deployed on **Render** (backend) + **Streamlit Community Cloud** (frontend) — both 100% free.
 
-### Backend Service (`veritas-api`)
-- **Build Config**: `railway.toml` (Nixpacks)
-- **Start Command**: `python scripts/bootstrap.py && uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT`
-- **Healthcheck Path**: `/health`
+### Backend — Render Free Web Service
+- **Live URL**: `https://veritas-decision-intelligence.onrender.com`
+- **Build Command**: `pip install -r requirements.txt && python scripts/bootstrap.py`
+- **Start Command**: `uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT`
+- **Config File**: `render.yaml`
 - **Environment Variables**:
   ```env
   APP_ENV=production
   DUCKDB_PATH=data/veritas_kpi.duckdb
   LLM_PROVIDER=gemini
-  GEMINI_API_KEY=your_railway_secret_key
+  GEMINI_API_KEY=your_google_ai_studio_key
   GEMINI_MODEL=gemini-1.5-flash
+  PYTHON_VERSION=3.11.9
   ```
 
-### Frontend Service (`veritas-ui`)
-- **Build Config**: `railway.frontend.toml`
-- **Start Command**: `streamlit run frontend/streamlit_app.py --server.address=0.0.0.0 --server.port=$PORT --server.headless=true`
-- **Healthcheck Path**: `/_stcore/health`
-- **Environment Variables**:
-  ```env
-  API_BASE_URL=https://veritas-api.up.railway.app
+### Frontend — Streamlit Community Cloud
+- **Live URL**: `https://veritas-decision-intelligencegit-dbt89zj7mutxfzxzoucf7j.streamlit.app/`
+- **Main file**: `frontend/streamlit_app.py`
+- **Branch**: `master`
+- **Secrets** (Advanced Settings → Secrets):
+  ```toml
+  API_BASE_URL = "https://veritas-decision-intelligence.onrender.com"
+  LLM_PROVIDER = "template"
   ```
 
 ---
